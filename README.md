@@ -17,26 +17,27 @@ This data generator project is a simplification based on the following two proje
 &nbsp;
 ## Quickstart
 
-Using python 3.10:  
+Tested for **python v3.10**:  
 Inside venv do `$pip install -r requirements.txt`
 
-Download the required files from the Google Drive [folder](https://drive.google.com/drive/u/2/folders/1bI-woBdktrIAN8bNWeACNizGL17b9L2y):
+Download the required files from the Google Drive [folder](https://drive.google.com/drive/u/2/folders/1bI-woBdktrIAN8bNWeACNizGL17b9L2y)  
+If zipped, extract files and put all into `/Synthtext/files` as following:  
 
+* `/background/labels.txt` - run `generate_background_paths.py` to obtain it
+* `/fonts/japanese` - folder with all fonts
+* `/words/japanese/words.txt` - japanese words to be generated
 
-In `/Synthtext/files` create following folders:
-* `/background` - run `generate_background_paths.py` so that it puts `labels.txt` in it
-* `/fonts` - put `/japanese` folder with fonts here
-* `/words/japanese` - put `words.txt` here
+Add `/Synthtext/files/` to `.gitinfo/exclude`
 
 Then update file paths in `cfg.py` and `data_cfg.py`:
 
 * `sample_num` - amount of images to be generated
 * `data_dir` - output path
-* `font_dir` - should point to "files/fonts/japanese" from above
-* `standard_font_path` - should point to a single font, e.g. 'files/fonts/japanese/Noto_Serif_JP/static/NotoSerifJP-Regular.ttf'
-* `text_filepath` - should point to 'files/words/apanese/words.txt'
-* `bg_filepath` = should point to 'files/background/labels.txt' generated via "generate_background_paths.py"
-* `color_filepath` = should point to 'data/colors_new.cp'
+* `font_dir` - should point to `files/fonts/japanese` from above
+* `standard_font_path` - should point to a single font, e.g. `files/fonts/japanese/Noto_Serif_JP/static/NotoSerifJP-Regular.ttf`
+* `text_filepath` - should point to `files/words/apanese/words.txt`
+* `bg_filepath` = should point to `files/background/labels.txt` generated via `generate_background_paths.py`
+* `color_filepath` = should point to `data/colors_new.cp`
 
 
 Make sure all paths are valid
