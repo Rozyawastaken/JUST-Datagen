@@ -9,6 +9,7 @@ Written by Yu Qian
 import os
 import cv2
 import math
+import glob
 import numpy as np
 import pygame
 from pygame import freetype
@@ -29,10 +30,9 @@ class datagen():
         
         freetype.init()
         cur_file_path = os.path.dirname(__file__)
-        
+
         font_dir = os.path.join(cur_file_path, data_cfg.font_dir)
-        self.font_list = os.listdir(font_dir)
-        self.font_list = [os.path.join(font_dir, font_name) for font_name in self.font_list]
+        self.font_list = glob.glob(os.path.join(font_dir, '**', '*.ttf'), recursive=True)
         self.standard_font_path = os.path.join(cur_file_path, data_cfg.standard_font_path)
         
         color_filepath = os.path.join(cur_file_path, data_cfg.color_filepath)
@@ -169,14 +169,13 @@ class datagen():
         return [i_t, i_s, t_sk, t_t, t_b, t_f, surf2]
 
 def enqueue_data(queue, capacity):  
-    
     np.random.seed()
     gen = datagen()
     while True:
         try:
             data = gen.gen_srnet_data_with_background()
         except Exception as e:
-            pass
+            print(e)
         if queue.qsize() < capacity:
             queue.put(data)
 

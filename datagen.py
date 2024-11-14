@@ -10,9 +10,11 @@ import cv2
 import cfg
 from Synthtext.gen import datagen, multiprocess_datagen
 
+
 def makedirs(path):
     if not os.path.exists(path):
         os.makedirs(path)
+
 
 def main():
     
@@ -36,7 +38,7 @@ def main():
     mp_gen.multiprocess_runningqueue()
     digit_num = len(str(cfg.sample_num)) - 1
     for idx in range(cfg.sample_num):
-        print ("Generating step {:>6d} / {:>6d}".format(idx + 1, cfg.sample_num))
+        print("Generating step {:>6d} / {:>6d}".format(idx + 1, cfg.sample_num))
         i_t, i_s, t_sk, t_t, t_b, t_f, mask_t = mp_gen.dequeue_data()
         i_t_path = os.path.join(i_t_dir, str(idx).zfill(digit_num) + '.png')
         i_s_path = os.path.join(i_s_dir, str(idx).zfill(digit_num) + '.png')
@@ -54,6 +56,7 @@ def main():
         cv2.imwrite(mask_t_path, mask_t, [int(cv2.IMWRITE_PNG_COMPRESSION), 0])
 
     mp_gen.terminate_pool()
+
 
 if __name__ == '__main__':
     main()
