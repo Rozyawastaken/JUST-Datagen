@@ -15,7 +15,36 @@ This data generator project is a simplification based on the following two proje
 [Skeletonization-of-Digital-Patterns](https://github.com/anupamwadhwa/Skeletonization-of-Digital-Patterns): Adjusted this project to Python3 code to skeletonize mask_t and get `t_sk`.
 
 &nbsp;
-## Generate data
+## Quickstart
+
+Using python 3.10:  
+Inside venv do `$pip install -r requirements.txt`
+
+Download the required files from the Google Drive [folder](https://drive.google.com/drive/u/2/folders/1bI-woBdktrIAN8bNWeACNizGL17b9L2y):
+
+
+In `/Synthtext/files` create following folders:
+* `/background` - run `generate_background_paths.py` so that it puts `labels.txt` in it
+* `/fonts` - put `/japanese` folder with fonts here
+* `/words/japanese` - put `words.txt` here
+
+Then update file paths in `cfg.py` and `data_cfg.py`:
+
+* `sample_num` - amount of images to be generated
+* `data_dir` - output path
+* `font_dir` - should point to "files/fonts/japanese" from above
+* `standard_font_path` - should point to a single font, e.g. 'files/fonts/japanese/Noto_Serif_JP/static/NotoSerifJP-Regular.ttf'
+* `text_filepath` - should point to 'files/words/apanese/words.txt'
+* `bg_filepath` = should point to 'files/background/labels.txt' generated via "generate_background_paths.py"
+* `color_filepath` = should point to 'data/colors_new.cp'
+
+
+Make sure all paths are valid
+
+Finally, run `datagen.py`  
+Images generate rather quickly, so if it doesn't proceed then something is probably wrong with the paths
+
+---
 First prepare a directory of fonts and a background datasets without text. You can also prepare a word corpus for rendering. 
 
 You need to write the absolute path of each data in the background dataset as a line into a file, and modify `bg_filepath` parameter of `Synthtext/data_cfg.py` to the path of this file. 
