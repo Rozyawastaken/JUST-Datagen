@@ -15,7 +15,7 @@ font_dir = 'files\\fonts\\japanese'
 standard_font_path = 'files\\fonts\\japanese\\Noto_Serif_JP\\static\\NotoSerifJP-Regular.ttf'
 
 # text
-text_filepath = 'files\\words\\japanese\\words.txt'
+words_filepath = 'files\\words\\words.parquet'
 capitalize_rate = 0.1
 uppercase_rate = 0.04
 

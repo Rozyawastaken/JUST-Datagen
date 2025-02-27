@@ -16,7 +16,7 @@ t_f_dir = 't_f'
 mask_t_dir = 'mask_t'
 
 # sample
-sample_num = 17
+sample_num = 25000
 
 # multiprocess
 process_num = 16

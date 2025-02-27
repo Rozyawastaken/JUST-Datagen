@@ -11,6 +11,7 @@ import cv2
 import math
 import glob
 import numpy as np
+import pandas as pd
 import pygame
 from pygame import freetype
 import random
@@ -23,6 +24,7 @@ from . import colorize
 from . import skeletonization
 from . import render_standard_text
 from . import data_cfg
+
 
 class datagen():
 
@@ -38,9 +40,8 @@ class datagen():
         color_filepath = os.path.join(cur_file_path, data_cfg.color_filepath)
         self.colorsRGB, self.colorsLAB = colorize.get_color_matrix(color_filepath)
         
-        text_filepath = os.path.join(cur_file_path, data_cfg.text_filepath)
-        self.text_list = open(text_filepath, 'r').readlines()
-        self.text_list = [text.strip() for text in self.text_list]
+        words_filepath = os.path.join(cur_file_path, data_cfg.words_filepath)
+        self.words_df = pd.read_parquet(words_filepath)
         
         bg_filepath = os.path.join(cur_file_path, data_cfg.bg_filepath)
         self.bg_list = open(bg_filepath, 'r').readlines()
@@ -64,13 +65,16 @@ class datagen():
         while True:
             # choose font, text and bg
             font = np.random.choice(self.font_list)
-            text1, text2 = np.random.choice(self.text_list), np.random.choice(self.text_list)
-            
-            upper_rand = np.random.rand()
-            if upper_rand < data_cfg.capitalize_rate + data_cfg.uppercase_rate:
-                text1, text2 = text1.capitalize(), text2.capitalize()
-            if upper_rand < data_cfg.uppercase_rate:
-                text1, text2 = text1.upper(), text2.upper()
+            random_row = self.words_df.sample(n=1)
+            text1, text2 = random_row["japanese"].iloc[0], random_row["ukrainian"].iloc[0]
+
+            # No need to capitalize
+
+            # upper_rand = np.random.rand()
+            # if upper_rand < data_cfg.capitalize_rate + data_cfg.uppercase_rate:
+            #     text1, text2 = text1.capitalize(), text2.capitalize()
+            # if upper_rand < data_cfg.uppercase_rate:
+            #     text1, text2 = text1.upper(), text2.upper()
             bg = cv2.imread(random.choice(self.bg_list))
 
             # init font
@@ -83,6 +87,8 @@ class datagen():
             font.underline = np.random.rand() < data_cfg.underline_rate
             font.strong = np.random.rand() < data_cfg.strong_rate
             font.oblique = np.random.rand() < data_cfg.oblique_rate
+
+            text2 = render_standard_text.preprocess_text(font, text2)
 
             # render text to surf
             param = {
@@ -167,6 +173,7 @@ class datagen():
             break
    
         return [i_t, i_s, t_sk, t_t, t_b, t_f, surf2]
+
 
 def enqueue_data(queue, capacity):  
     np.random.seed()
