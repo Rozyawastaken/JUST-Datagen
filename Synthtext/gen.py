@@ -169,7 +169,7 @@ class datagen():
         return [bg_img, text1, text2, source_img, target_img, source_img_grey, target_img_grey, source_img_styled, target_img_styled,  source_sk, target_sk, surf1, surf2]
 
 
-def enqueue_data(queue, capacity):  
+def enqueue_data(queue, capacity):
     np.random.seed()
     gen = datagen()
     while True:

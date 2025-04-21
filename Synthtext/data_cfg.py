@@ -12,7 +12,7 @@ underline_rate = 0.01
 strong_rate = 0.05
 oblique_rate = 0.02
 font_dir = 'files\\fonts\\japanese'
-standard_font_path = 'files\\fonts\\japanese\\Noto_Serif_JP\\static\\NotoSerifJP-Regular.ttf'
+standard_font_path = 'files\\fonts\\japanese\\M_PLUS_1p\\MPLUS1p-Regular.ttf'
 
 # text
 words_filepath = 'files\\words\\words.parquet'

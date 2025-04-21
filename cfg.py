@@ -6,15 +6,14 @@ Written by Yu Qian
 """
 
 # dir
-data_dir = 'Synthtext\\files\\data'
+data_dir = 'F:\\YULA\\datasets\\testing\\test-15k-1'
 
-bg_img_dir = "bg_img"
+bg_img_dir = "t_b"
 
-source_text_dir = "source_text"
-target_text_dir = "target_text"
+texts_dir = "txt"
 
-source_img_dir = "source_img"
-target_img_dir = "target_img"
+source_img_dir = "i_s"
+target_img_dir = "t_f"
 
 source_img_grey_dir = "source_img_grey"
 target_img_grey_dir = "target_img_grey"
@@ -25,11 +24,11 @@ target_img_styled_dir = "target_img_styled"
 source_sk_dir = "source_sk"
 target_sk_dir = "target_sk"
 
-source_mask_dir = "source_mask"
-target_mask_dir = "target_mask"
+source_mask_dir = "mask_s"
+target_mask_dir = "mask_t"
 
 # sample
-sample_num = 20
+sample_num = 15000
 
 # multiprocess
 process_num = 16
