@@ -9,6 +9,26 @@ import pygame.locals
 from pygame import freetype
 import numpy as np
 import cv2
+import glob
+import os
+
+# def render_normal(font, text):
+#     line_spacing = font.get_sized_height() + 1
+#     line_bounds = font.get_rect(text)
+#     fsize = (round(2.0 * line_bounds.width), round(1.25 * line_spacing))
+#     surf = pygame.Surface(fsize, pygame.locals.SRCALPHA, 32)
+#     x, y = 0, line_spacing
+#
+#     rect = font.render_to(surf, (x, y), text)
+#     rect.x = x + rect.x
+#     rect.y = y - rect.y
+#
+#     surf = pygame.surfarray.pixels_alpha(surf).swapaxes(0, 1)
+#     loc = np.where(surf > 20)
+#     miny, minx = np.min(loc[0]), np.min(loc[1])
+#     maxy, maxx = np.max(loc[0]), np.max(loc[1])
+#     return surf[miny:maxy+1, minx:maxx+1], rect
+
 
 def render_normal(font, text):
     line_spacing = font.get_sized_height() + 1
@@ -16,16 +36,24 @@ def render_normal(font, text):
     fsize = (round(2.0 * line_bounds.width), round(1.25 * line_spacing))
     surf = pygame.Surface(fsize, pygame.locals.SRCALPHA, 32)
     x, y = 0, line_spacing
-    
-    rect = font.render_to(surf, (x, y), text)
-    rect.x = x + rect.x
-    rect.y = y - rect.y
-    
+
+    for char in text:
+        if char in ("э", "Э"):
+            temp_surf = pygame.Surface((font.get_rect(char).width, line_spacing), pygame.locals.SRCALPHA, 32)
+            font.render_to(temp_surf, (0, line_spacing), char)
+            temp_surf = pygame.transform.flip(temp_surf, True, False)  # Flip horizontally
+            surf.blit(temp_surf, (x, 0))  # Paste flipped char
+        else:
+            font.render_to(surf, (x, y), char)
+
+        x += font.get_rect(char).width  # Move to next character position
+
     surf = pygame.surfarray.pixels_alpha(surf).swapaxes(0, 1)
     loc = np.where(surf > 20)
     miny, minx = np.min(loc[0]), np.min(loc[1])
     maxy, maxx = np.max(loc[0]), np.max(loc[1])
-    return surf[miny:maxy+1, minx:maxx+1], rect
+    return surf[miny:maxy + 1, minx:maxx + 1], font.get_rect(text)
+
 
 def make_standard_text(font_path, text, shape, padding = 0.1, color = (0, 0, 0), init_fontsize = 25):
     font = freetype.Font(font_path)
@@ -33,6 +61,7 @@ def make_standard_text(font_path, text, shape, padding = 0.1, color = (0, 0, 0),
     font.origin = True
     fontsize = init_fontsize
     font.size = fontsize
+    text = preprocess_text(font, text)
     pre_remain = None
     if padding < 1:
         border = int(min(shape) * padding)
@@ -74,16 +103,36 @@ def make_standard_text(font_path, text, shape, padding = 0.1, color = (0, 0, 0),
     canvas = ((1. - canvas.astype(np.float32) / 255.) * 127.).astype(np.uint8)
 
     return cv2.cvtColor(canvas, cv2.COLOR_GRAY2RGB)
-    
+
+
+def preprocess_text(font, text):
+    if all(font.get_metrics(text)):
+        return text
+
+    text = text.replace("ґ", "г").replace("Ґ", "Г")
+    text = text.replace("є", "e").replace("Є", "E")  # ukrainian to russian
+    # text = text.replace("є", "э").replace("Є", "Э")  # ukrainian to russian
+    text = text.replace("і", "i").replace("І", "I")  # ukrainian to english
+    text = text.replace("ї", "i").replace("Ї", "I")  # ukrainian `ї` to english `і`
+
+    if all(font.get_metrics(text)):
+        return text
+    else:
+        print("Still wrong", font.path, text)
+
+    raise ValueError("Font is still broken:", font.path, text)
+
+
 def main():
     pygame.init()
     freetype.init()
-    font = '/home/qianyu/fonts/english_ttf/arial.ttf'
-    font = freetype.Font(font)
-    font.antialiased = True
-    font.origin = True
 
-    text = 'canvas'
+    cur_file_path = os.path.dirname(__file__)
+    standard_font_path = 'files\\fonts\\japanese\\M_PLUS_1p\\MPLUS1p-Regular.ttf'
+
+    font = os.path.join(cur_file_path, standard_font_path)
+
+    text = "абвгґдеєжзиіїйклмнопрстуфхцчшцьюя'iэ"
     shape = (224, 448)
     i_t = make_standard_text(font, text, shape)
     cv2.imshow('i_t', i_t)

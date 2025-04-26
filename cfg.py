@@ -6,17 +6,29 @@ Written by Yu Qian
 """
 
 # dir
-data_dir = '/reserve/qianyu/datasets/srnet_data'
-i_t_dir = 'i_t'
-i_s_dir = 'i_s'
-t_sk_dir = 't_sk'
-t_t_dir = 't_t'
-t_b_dir = 't_b'
-t_f_dir = 't_f'
-mask_t_dir = 'mask_t'
+data_dir = 'F:\\YULA\\datasets\\testing\\test-15k-1'
+
+bg_img_dir = "t_b"
+
+texts_dir = "txt"
+
+source_img_dir = "i_s"
+target_img_dir = "t_f"
+
+source_img_grey_dir = "source_img_grey"
+target_img_grey_dir = "target_img_grey"
+
+source_img_styled_dir = "source_img_styled"
+target_img_styled_dir = "target_img_styled"
+
+source_sk_dir = "source_sk"
+target_sk_dir = "target_sk"
+
+source_mask_dir = "mask_s"
+target_mask_dir = "mask_t"
 
 # sample
-sample_num = 100000
+sample_num = 15000
 
 # multiprocess
 process_num = 16
